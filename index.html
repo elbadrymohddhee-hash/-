@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ديزل سينما | النسخة الذكية 🎬</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --main: #ff4500; --accent: #00f2ea; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        
+        .navbar { background: #000; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--main); position: sticky; top: 0; z-index: 1000; }
+        .navbar h1 { color: var(--main); margin: 0; text-shadow: 0 0 10px var(--main); font-size: 1.8rem; }
+        .navbar h1 span { color: white; }
+
+        .search-box { background: #111; border: 1px solid #333; padding: 10px; border-radius: 50px; display: flex; align-items: center; width: 40%; }
+        .search-box input { background: none; border: none; color: white; width: 100%; outline: none; padding-right: 10px; }
+
+        .container { padding: 30px; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        
+        /* كارت الفيلم */
+        .movie-card { background: #111; border-radius: 15px; overflow: hidden; transition: 0.4s; border: 1px solid #222; position: relative; cursor: pointer; }
+        .movie-card:hover { transform: scale(1.05); border-color: var(--main); box-shadow: 0 0 20px rgba(255, 69, 0, 0.4); }
+        .movie-card img { width: 100%; height: 270px; object-fit: cover; }
+        .movie-info { padding: 12px; text-align: center; }
+        .movie-info h3 { font-size: 0.9rem; margin: 0; height: 40px; overflow: hidden; }
+        .rate { color: #ffcc00; font-size: 0.8rem; margin-top: 5px; }
+
+        .btn-watch { background: var(--main); color: white; border: none; padding: 8px; border-radius: 5px; width: 100%; margin-top: 10px; font-weight: bold; cursor: pointer; }
+        
+        /* لودر التحميل */
+        #loader { text-align: center; padding: 50px; font-size: 1.5rem; color: var(--main); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>ديزل <span>سينما</span></h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ابحث عن فيلمك يا ديزل..." onkeyup="searchMovies()">
+            <i class="fas fa-search" style="color:var(--main)"></i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 style="border-right: 4px solid var(--main); padding-right: 10px; margin-bottom: 25px;">🔥 أفلام حصرية الآن</h2>
+        
+        <div id="loader">جاري سحب الأفلام من السيرفر...</div>
+        <div class="movie-grid" id="movieGrid">
+            </div>
+    </div>
+
+    <script>
+        // مفتاح السيرفر العالمي (TMDB API)
+        const API_KEY = '862078693a1529a674d8175d79679203'; 
+        const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
+        const grid = document.getElementById('movieGrid');
+        const loader = document.getElementById('loader');
+
+        // 1. وظيفة جلب الأفلام من السيرفر
+        async function getMovies(url) {
+            const res = await fetch(url);
+            const data = await res.json();
+            showMovies(data.results);
+        }
+
+        // 2. وظيفة عرض الأفلام في الموقع
+        function showMovies(movies) {
+            grid.innerHTML = '';
+            loader.style.display = 'none';
+
+            movies.forEach((movie) => {
+                const { title, poster_path, vote_average, id } = movie;
+                const movieEl = document.createElement('div');
+                movieEl.className = 'movie-card';
+                movieEl.innerHTML = `
+                    <img src="${IMG_PATH + poster_path}" alt="${title}">
+                    <div class="movie-info">
+                        <h3>${title}</h3>
+                        <div class="rate"><i class="fas fa-star"></i> ${vote_average}</div>
+                        <button class="btn-watch" onclick="openMovie(${id})">مشاهدة الآن</button>
+                    </div>
+                `;
+                grid.appendChild(movieEl);
+            });
+        }
+
+        // 3. وظيفة البحث
+        function searchMovies() {
+            const term = document.getElementById('searchInput').value;
+            if(term) {
+                getMovies(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${term}&language=ar`);
+            } else {
+                window.location.reload();
+            }
+        }
+
+        // 4. وظيفة فتح الفيلم (توجيه لموقع مشاهدة)
+        function openMovie(id) {
+            // هنا بنوجه الزبون لموقع مشاهدة عالمي باستخدام ID الفيلم
+            window.open(`https://www.themoviedb.org/movie/${id}`, '_blank');
+        }
+
+        // تشغيل السيرفر أول ما الموقع يفتح
+        getMovies(`https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&language=ar`);
+
+    </script>
+</body>
+</html>

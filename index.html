@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ديزل سينما | النسخة الشغالة 🎬</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --main: #ff4500; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        .navbar { background: #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--main); position: sticky; top: 0; z-index: 1000; }
+        .navbar h1 { color: var(--main); margin: 0; text-shadow: 0 0 10px var(--main); font-size: 1.5rem; }
+        .search-input { background: #111; border: 1px solid #333; color: white; padding: 8px 15px; border-radius: 20px; outline: none; width: 50%; }
+        .container { padding: 20px; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .movie-card { background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
+        .movie-card:hover { transform: scale(1.05); border-color: var(--main); }
+        .movie-card img { width: 100%; height: 220px; object-fit: cover; }
+        .movie-info { padding: 10px; text-align: center; font-size: 0.8rem; }
+        .btn-play { background: var(--main); color: white; border: none; padding: 7px; border-radius: 5px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 5px; }
+        #msg { text-align: center; padding: 20px; color: var(--main); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>ديزل <span>سينما</span></h1>
+        <input type="text" id="search" class="search-input" placeholder="ابحث عن فيلمك يا ديزل..." oninput="searchMovies()">
+    </nav>
+
+    <div class="container">
+        <h2 style="border-right: 3px solid var(--main); padding-right: 10px; font-size: 1.1rem;">🔥 أفلام حصرية الآن</h2>
+        <div id="msg">جاري تحميل الأفلام...</div>
+        <div class="movie-grid" id="grid">
+            </div>
+    </div>
+
+    <script>
+        // مفتاح تشغيل عالمي
+        const API_KEY = '862078693a1529a674d8175d79679203';
+        const grid = document.getElementById('grid');
+        const msg = document.getElementById('msg');
+
+        // 1. وظيفة التحميل الأساسية
+        async function loadMovies() {
+            try {
+                const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ar-SA&page=1`);
+                const data = await res.json();
+                if (data.results && data.results.length > 0) {
+                    render(data.results);
+                } else {
+                    msg.innerText = "السيرفر مشغول، جرب كمان دقيقة!";
+                }
+            } catch (e) {
+                msg.innerText = "تأكد من النت يا ديزل!";
+            }
+        }
+
+        // 2. وظيفة رسم الأفلام
+        function render(movies) {
+            grid.innerHTML = '';
+            msg.style.display = 'none';
+            movies.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Poster';
+                card.innerHTML = `
+                    <img src="${poster}">
+                    <div class="movie-info">
+                        <h3>${m.title}</h3>
+                        <button class="btn-play" onclick="window.open('https://www.google.com/search?q=مشاهدة+فيلم+${m.title}', '_blank')">مشاهدة</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 3. وظيفة البحث
+        async function searchMovies() {
+            const q = document.getElementById('search').value;
+            if (q.length > 2) {
+                const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${q}&language=ar-SA`);
+                const data = await res.json();
+                render(data.results);
+            } else if (q.length === 0) {
+                loadMovies();
+            }
+        }
+
+        // تشغيل فوري
+        loadMovies();
+    </script>
+</body>
+</html>

